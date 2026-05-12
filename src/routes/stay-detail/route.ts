@@ -52,6 +52,7 @@ export function registerStayDetailRoute(app: OpenAPIHono): void {
       )
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error'
+      console.error('[DEBUG] fetchStayDetail error:', message, 'error type:', typeof error, error instanceof Error ? error.stack : String(error))
       return c.json({ id, sections: [], metadata: null, error: message }, 502)
     }
   })

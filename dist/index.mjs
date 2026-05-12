@@ -51379,6 +51379,7 @@ function registerStayDetailRoute(app) {
       }, 200);
     } catch (error52) {
       const message = error52 instanceof Error ? error52.message : "Unknown error";
+      console.error("[DEBUG] fetchStayDetail error:", message, "error type:", typeof error52, error52 instanceof Error ? error52.stack : String(error52));
       return c.json({ id, sections: [], metadata: null, error: message }, 502);
     }
   });
