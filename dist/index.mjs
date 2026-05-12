@@ -51495,6 +51495,11 @@ function registerStaysSearchRoute(app) {
 // src/app.ts
 function createApp() {
   const app = new OpenAPIHono;
+  app.use(async (c, next) => {
+    console.error("[DEBUG APP] Request:", c.req.method, c.req.url, "path:", c.req.path);
+    await next();
+    console.error("[DEBUG APP] Response:", c.res.status);
+  });
   registerAutocompleteRoute(app);
   registerMarketsRoute(app);
   registerStaysSearchRoute(app);
