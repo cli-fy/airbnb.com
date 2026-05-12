@@ -4,7 +4,7 @@ import { StayDetailParamsSchema, StayDetailResponseSchema } from './schema.js'
 
 const stayDetailRoute = createRoute({
   method: 'get',
-  path: '/stays/:id',
+  path: '/stays/{id}',
   request: {
     params: StayDetailParamsSchema,
   },

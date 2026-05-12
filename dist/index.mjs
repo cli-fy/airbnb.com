@@ -51343,7 +51343,7 @@ var StayDetailResponseSchema = exports_external2.object({
 // src/routes/stay-detail/route.ts
 var stayDetailRoute = createRoute({
   method: "get",
-  path: "/stays/:id",
+  path: "/stays/{id}",
   request: {
     params: StayDetailParamsSchema
   },
@@ -51520,20 +51520,6 @@ function generateOpenApiSpec(app) {
 // src/index.ts
 var app = createApp();
 var spec = generateOpenApiSpec(app);
-var originalFetch = app.fetch.bind(app);
-app.fetch = async (req) => {
-  try {
-    const res = await originalFetch(req);
-    await Bun.write("/tmp/airbnb-debug.log", JSON.stringify({ url: req.url, status: res.status }) + `
-`);
-    return res;
-  } catch (error52) {
-    const message = error52 instanceof Error ? error52.message : String(error52);
-    await Bun.write("/tmp/airbnb-debug.log", JSON.stringify({ url: req.url, error: message, stack: error52 instanceof Error ? error52.stack : null }) + `
-`);
-    throw error52;
-  }
-};
 var cli = exports_Cli.create("airbnb", {
   description: "Fetch Airbnb listings, search, and market data via RESTful API"
 }).command("api", {
@@ -51543,6 +51529,5 @@ var cli = exports_Cli.create("airbnb", {
 });
 var src_default = cli;
 export {
-  src_default as default,
-  app
+  src_default as default
 };
