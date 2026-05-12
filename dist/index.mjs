@@ -51532,5 +51532,6 @@ var cli = exports_Cli.create("airbnb", {
 });
 var src_default = cli;
 export {
-  src_default as default
+  src_default as default,
+  app
 };

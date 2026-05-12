@@ -2,7 +2,7 @@ import { Cli } from 'incur'
 import { createApp } from './app.js'
 import { generateOpenApiSpec } from './open-api.js'
 
-const app = createApp()
+export const app = createApp()
 const spec = generateOpenApiSpec(app)
 
 const cli = Cli.create('airbnb', {
