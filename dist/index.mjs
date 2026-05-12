@@ -51156,6 +51156,7 @@ async function fetchStaysSearch(location2) {
 }
 async function fetchStayDetail(listingId) {
   const url3 = `${BASE_URL}/rooms/${listingId}`;
+  console.error("[DEBUG] fetchStayDetail: fetching", url3);
   const response = await fetchWithTimeout(url3, {
     headers: {
       "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -51163,11 +51164,14 @@ async function fetchStayDetail(listingId) {
       "Accept-Language": "en-US,en;q=0.9"
     }
   });
+  console.error("[DEBUG] fetchStayDetail: response status", response.status);
   if (!response.ok) {
     throw new Error(`upstream returned ${response.status}`);
   }
   const html = await response.text();
+  console.error("[DEBUG] fetchStayDetail: html length", html.length);
   const extracted = extractDetailData(html);
+  console.error("[DEBUG] fetchStayDetail: sections", extracted.sections.length, "metadata", !!extracted.metadata);
   return {
     sections: extracted.sections,
     metadata: extracted.metadata

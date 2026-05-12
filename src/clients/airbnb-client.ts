@@ -127,6 +127,7 @@ export async function fetchStaysSearch(location: string): Promise<SearchResponse
 export async function fetchStayDetail(listingId: string): Promise<DetailResponse> {
   const url = `${BASE_URL}/rooms/${listingId}`
 
+  console.error('[DEBUG] fetchStayDetail: fetching', url)
   const response = await fetchWithTimeout(url, {
     headers: {
       'User-Agent':
@@ -136,12 +137,15 @@ export async function fetchStayDetail(listingId: string): Promise<DetailResponse
     },
   })
 
+  console.error('[DEBUG] fetchStayDetail: response status', response.status)
   if (!response.ok) {
     throw new Error(`upstream returned ${response.status}`)
   }
 
   const html = await response.text()
+  console.error('[DEBUG] fetchStayDetail: html length', html.length)
   const extracted = extractDetailData(html)
+  console.error('[DEBUG] fetchStayDetail: sections', extracted.sections.length, 'metadata', !!extracted.metadata)
 
   return {
     sections: extracted.sections,
