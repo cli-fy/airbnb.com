@@ -1,0 +1,43 @@
+{
+  "name": "@clify/airbnb",
+  "version": "0.1.0",
+  "description": "CLI plugin for fetching Airbnb data via a RESTful API",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cli-fy/clify",
+    "directory": "packages/airbnb"
+  },
+  "clify": {
+    "name": "airbnb",
+    "description": "Fetch Airbnb listings, search, and market data",
+    "entry": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsdown --config tsdown.config.ts --config-loader native",
+    "coverage": "vitest run --config vitest.config.ts --coverage",
+    "test": "vitest run --config vitest.config.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsdown --watch",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "knip": "knip"
+  },
+  "dependencies": {
+    "@hono/zod-openapi": "^0.19.6",
+    "hono": "^4.7.7",
+    "incur": "^0.4.5",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.4",
+    "@types/node": "^24.0.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260510.1",
+    "@vitest/coverage-v8": "3.2.4",
+    "knip": "^5.50.0",
+    "tsdown": "^0.16.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}
