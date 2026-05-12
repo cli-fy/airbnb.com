@@ -51373,6 +51373,7 @@ var stayDetailRoute = createRoute({
 function registerStayDetailRoute(app) {
   app.openapi(stayDetailRoute, async (c) => {
     const { id } = c.req.valid("param");
+    console.error("[DEBUG] route handler called with id:", id);
     try {
       const upstream = await fetchStayDetail(id);
       const sections = upstream.sections.map((section) => typeof section === "object" && section !== null ? section : {});

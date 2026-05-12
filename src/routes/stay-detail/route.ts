@@ -31,6 +31,7 @@ const stayDetailRoute = createRoute({
 export function registerStayDetailRoute(app: OpenAPIHono): void {
   app.openapi(stayDetailRoute, async (c) => {
     const { id } = c.req.valid('param')
+    console.error('[DEBUG] route handler called with id:', id)
 
     try {
       const upstream = await fetchStayDetail(id)
