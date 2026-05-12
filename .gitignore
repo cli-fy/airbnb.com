@@ -1,0 +1,21 @@
+node_modules/
+har/
+
+# dist/ must be committed so clify can install the GitHub plugin.
+
+# env
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# debug
+npm-debug.log*
