@@ -12,7 +12,7 @@
   "clify": {
     "name": "airbnb",
     "description": "Fetch Airbnb listings, search, and market data",
-    "entry": "./dist/index.js"
+    "entry": "./dist/index.mjs"
   },
   "scripts": {
     "build": "tsdown --config tsdown.config.ts --config-loader native",
