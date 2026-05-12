@@ -51156,7 +51156,6 @@ async function fetchStaysSearch(location2) {
 }
 async function fetchStayDetail(listingId) {
   const url3 = `${BASE_URL}/rooms/${listingId}`;
-  console.error("[DEBUG] fetchStayDetail: fetching", url3);
   const response = await fetchWithTimeout(url3, {
     headers: {
       "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -51164,14 +51163,11 @@ async function fetchStayDetail(listingId) {
       "Accept-Language": "en-US,en;q=0.9"
     }
   });
-  console.error("[DEBUG] fetchStayDetail: response status", response.status);
   if (!response.ok) {
     throw new Error(`upstream returned ${response.status}`);
   }
   const html = await response.text();
-  console.error("[DEBUG] fetchStayDetail: html length", html.length);
   const extracted = extractDetailData(html);
-  console.error("[DEBUG] fetchStayDetail: sections", extracted.sections.length, "metadata", !!extracted.metadata);
   return {
     sections: extracted.sections,
     metadata: extracted.metadata
@@ -51373,7 +51369,6 @@ var stayDetailRoute = createRoute({
 function registerStayDetailRoute(app) {
   app.openapi(stayDetailRoute, async (c) => {
     const { id } = c.req.valid("param");
-    console.error("[DEBUG] route handler called with id:", id);
     try {
       const upstream = await fetchStayDetail(id);
       const sections = upstream.sections.map((section) => typeof section === "object" && section !== null ? section : {});
@@ -51384,7 +51379,6 @@ function registerStayDetailRoute(app) {
       }, 200);
     } catch (error52) {
       const message = error52 instanceof Error ? error52.message : "Unknown error";
-      console.error("[DEBUG] fetchStayDetail error:", message, "error type:", typeof error52, error52 instanceof Error ? error52.stack : String(error52));
       return c.json({ id, sections: [], metadata: null, error: message }, 502);
     }
   });
@@ -51496,9 +51490,7 @@ function registerStaysSearchRoute(app) {
 function createApp() {
   const app = new OpenAPIHono;
   app.use(async (c, next) => {
-    console.error("[DEBUG APP] Request:", c.req.method, c.req.url, "path:", c.req.path);
     await next();
-    console.error("[DEBUG APP] Response:", c.res.status);
   });
   registerAutocompleteRoute(app);
   registerMarketsRoute(app);
@@ -51528,6 +51520,17 @@ function generateOpenApiSpec(app) {
 // src/index.ts
 var app = createApp();
 var spec = generateOpenApiSpec(app);
+var originalFetch = app.fetch.bind(app);
+app.fetch = async (req) => {
+  try {
+    return await originalFetch(req);
+  } catch (error52) {
+    const message = error52 instanceof Error ? error52.message : String(error52);
+    await Bun.write("/tmp/airbnb-debug.log", JSON.stringify({ url: req.url, error: message, stack: error52 instanceof Error ? error52.stack : null }) + `
+`);
+    throw error52;
+  }
+};
 var cli = exports_Cli.create("airbnb", {
   description: "Fetch Airbnb listings, search, and market data via RESTful API"
 }).command("api", {

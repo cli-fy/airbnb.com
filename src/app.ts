@@ -8,9 +8,7 @@ export function createApp(): OpenAPIHono {
   const app = new OpenAPIHono()
 
   app.use(async (c, next) => {
-    console.error('[DEBUG APP] Request:', c.req.method, c.req.url, 'path:', c.req.path)
     await next()
-    console.error('[DEBUG APP] Response:', c.res.status)
   })
 
   registerAutocompleteRoute(app)
