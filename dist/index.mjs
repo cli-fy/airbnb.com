@@ -51523,7 +51523,10 @@ var spec = generateOpenApiSpec(app);
 var originalFetch = app.fetch.bind(app);
 app.fetch = async (req) => {
   try {
-    return await originalFetch(req);
+    const res = await originalFetch(req);
+    await Bun.write("/tmp/airbnb-debug.log", JSON.stringify({ url: req.url, status: res.status }) + `
+`);
+    return res;
   } catch (error52) {
     const message = error52 instanceof Error ? error52.message : String(error52);
     await Bun.write("/tmp/airbnb-debug.log", JSON.stringify({ url: req.url, error: message, stack: error52 instanceof Error ? error52.stack : null }) + `
